@@ -27,3 +27,13 @@ jobs:
       - name: Run tests with coverage and report
         run: pytest --cov=. --cov-report=term --cov-report=xml \
              --html=report.html --self-contained-html
+
+  Deploy:
+    needs: run-tests
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: deploy the artifacts
+        uses: actions/deploy-pages@v4
