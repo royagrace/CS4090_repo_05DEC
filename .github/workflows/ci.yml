@@ -29,7 +29,7 @@ jobs:
         run: pytest --cov=. --cov-report=term --cov-report=xml --html=report.html --self-contained-html
 
       - name: Upload test artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-reports
           path: |
