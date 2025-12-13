@@ -1,9 +1,10 @@
-name: Python CICD
+name: CI - Run Tests
 
 on:
   push:
-    branches: [ master]
+    branches: [development]
   pull_request:
+    branches: [development]
 
 jobs:
   run-tests:
@@ -16,7 +17,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.15.0-alpha.2"
+          python-version: "3.11"
   
       - name: Install dependencies
         run: pip install -r requirements.txt
@@ -25,15 +26,12 @@ jobs:
         run: pytest
 
       - name: Run tests with coverage and report
-        run: pytest --cov=. --cov-report=term --cov-report=xml \
-             --html=report.html --self-contained-html
+        run: pytest --cov=. --cov-report=term --cov-report=xml --html=report.html --self-contained-html
 
-  Deploy:
-    needs: run-tests
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    steps:
-      - name: deploy the artifacts
-        uses: actions/deploy-pages@v4
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-reports
+          path: |
+            report.html
+            coverage.xml
